@@ -6,7 +6,7 @@
 
 ## Database (postgreSQL)
 Script to create tables necessary for this project.
-script
+```script
 -- =========================================================
 -- Extensions (once per database)
 -- =========================================================
