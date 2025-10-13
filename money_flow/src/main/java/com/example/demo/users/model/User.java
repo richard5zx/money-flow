@@ -1,4 +1,4 @@
-package com.example.demo.model;
+package com.example.demo.users.model;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -46,6 +46,5 @@ public class User {
 	@UpdateTimestamp
 	@Column(name = "updated_at", nullable = false, updatable = false)
 	private Instant updatedAt;
-	
 
 }
