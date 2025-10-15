@@ -11,7 +11,7 @@ public interface UserService {
 	User create(String email, String rawPassword, String fullName);
     User getById(UUID id);
     Page<User> list(Pageable pageable);
-    User update(UUID id, String email, String fullName);
-    void delete(UUID id);
+    User updateUser(UUID id, String email, String fullName);
+    void deleteUser(UUID id);
     void changePassword(UUID id, String newRawPassword);
 }

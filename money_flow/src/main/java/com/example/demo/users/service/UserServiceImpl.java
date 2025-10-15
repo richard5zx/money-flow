@@ -46,28 +46,47 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Page<User> list(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+		return ur.findAll(pageable);
 	}
 
 	@Override
 	@Transactional
-	public User update(UUID id, String email, String fullName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	@Transactional
-	public void delete(UUID id) {
-		// TODO Auto-generated method stub
+	public User updateUser(UUID id, String email, String fullName) {
 		
+		User user = ur.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		
+		if (email != null && !email.isBlank()) {
+			// Check if email already exists
+			if (!email.equalsIgnoreCase(user.getEmail()) && ur.existsByEmail(email)) {
+				throw new EmailAlreadyUsedException(email);
+			}
+			
+			user.setEmail(email);
+			
+		}
+		if (fullName != null) user.setFullName(fullName);
+		
+		return ur.save(user);
+	}
+
+	@Override
+	@Transactional
+	public void deleteUser(UUID id) {
+		if (!ur.existsById(id)) throw new UserNotFoundException(id);
+		ur.deleteById(id);
 	}
 
 	@Override
 	@Transactional
 	public void changePassword(UUID id, String newRawPassword) {
-		// TODO Auto-generated method stub
+		if (newRawPassword == null || newRawPassword.isBlank())
+			throw new IllegalArgumentException("Password is required");
+		
+		User user = ur.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		
+		user.setPasswordHash(passwordEncoder.encode(newRawPassword));
+		
+		ur.save(user);
 		
 	}
 
